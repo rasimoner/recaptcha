@@ -1,6 +1,6 @@
 {
   "name": "@pusula/recaptcha",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -23,5 +23,17 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "## Project setup ``` npm install ```",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rasimoner/recaptcha.git"
+  },
+  "author": "rasimoner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rasimoner/recaptcha/issues"
+  },
+  "homepage": "https://github.com/rasimoner/recaptcha#readme"
 }

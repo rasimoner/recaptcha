@@ -5,5 +5,5 @@ declare global {
   }
 }
 
-import VueRecaptcha from './VueRecaptcha.vue'
-export default VueRecaptcha
+import App from './App.vue'
+export default App

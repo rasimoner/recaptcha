@@ -6,7 +6,7 @@
 import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
 
 @Component
-export default class VueRecaptcha extends Vue {
+export default class App extends Vue {
   @Prop({required: true, default: "6LdX4PkfAAAAAKFHIHJlpxhHcMLWRnfKReyvTBqr"}) readonly siteKey?: string;
   @Prop({default: "normal"}) readonly size?: string;
   @Prop({default: "light"}) readonly theme?: string;
@@ -20,12 +20,12 @@ export default class VueRecaptcha extends Vue {
 
   async setRecaptcha() {
     if (window.grecaptcha == null)
-      return await this.isGrecaptchaNull();
+      return await this.isGoogleRecaptchaNull();
     else
       return this.renderRecaptcha();
   }
 
-  async isGrecaptchaNull() {
+  async isGoogleRecaptchaNull() {
     new Promise<void>((resolve) => {
       window.recaptchaReady = function () {
         resolve();

@@ -1,32 +1,82 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <div id="app" ref="recaptchaDiv"/>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
 
-nav {
-  padding: 30px;
-}
+@Component
+export default class VueRecaptcha extends Vue {
+  @Prop({required: true, default: "6LdX4PkfAAAAAKFHIHJlpxhHcMLWRnfKReyvTBqr"}) readonly siteKey?: string;
+  @Prop({default: "normal"}) readonly size?: string;
+  @Prop({default: "light"}) readonly theme?: string;
+  @Prop() readonly hl?: string;
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  recaptcha: any = null;
 
-nav a.router-link-exact-active {
-  color: #42b983;
+  async mounted() {
+    return await this.setRecaptcha();
+  }
+
+  async setRecaptcha() {
+    if (window.grecaptcha == null)
+      return await this.isGrecaptchaNull();
+    else
+      return this.renderRecaptcha();
+  }
+
+  async isGrecaptchaNull() {
+    new Promise<void>((resolve) => {
+      window.recaptchaReady = function () {
+        resolve();
+      };
+      const doc = window.document;
+      const scriptId = "recaptcha-script";
+      const scriptTag = doc.createElement("script");
+      scriptTag.id = scriptId;
+      scriptTag.setAttribute("src", `https://www.google.com/recaptcha/api.js?onload=recaptchaReady&render=explicit&hl=${this.hl}`);
+      doc.head.appendChild(scriptTag);
+    }).then(() => {
+      this.renderRecaptcha();
+    });
+  }
+
+  execute() {
+    window.grecaptcha.execute(this.recaptcha)
+  }
+
+  reset() {
+    window.grecaptcha.execute(this.recaptcha)
+  }
+
+  renderRecaptcha() {
+    if (!this.siteKey) throw "Site anahtarı alanı zorunludur";
+
+    if (!this.$refs?.recaptchaDiv) return;
+
+    this.recaptcha = window.grecaptcha.render(this.$refs.recaptchaDiv, {
+      'sitekey': this.siteKey,
+      'theme': this.theme,
+      'size': this.size,
+      'callback': (response: string) => this.verify(response),
+      'expired-callback': () => this.expire(),
+      'error-callback': () => this.fail()
+    })
+  }
+
+  @Emit()
+  verify(response: string): boolean {
+    return response != null && response != "";
+  }
+
+  @Emit()
+  expire() {
+  }
+
+  @Emit()
+  fail() {
+  }
 }
-</style>
+</script>
+
+<style scoped/>

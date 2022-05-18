@@ -1,9 +1,10 @@
 declare global {
-  interface Window {
-    grecaptcha: any,
-    recaptchaReady: any
-  }
+    interface Window {
+        grecaptcha: any,
+        recaptchaReady: any
+    }
 }
 
-import App from './App.vue'
-export default App
+import RecaptchaComponent from './Recaptcha.vue'
+
+export default RecaptchaComponent

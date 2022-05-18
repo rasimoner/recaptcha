@@ -6,7 +6,7 @@
 import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
 
 @Component
-export default class App extends Vue {
+export default class RecaptchaComponent extends Vue {
   @Prop({required: true}) readonly siteKey?: string;
   @Prop({default: "normal"}) readonly size?: string;
   @Prop({default: "light"}) readonly theme?: string;
